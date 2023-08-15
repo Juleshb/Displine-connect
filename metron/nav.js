@@ -1,3 +1,5 @@
+
+
 function navigate(view) {
   var contentDiv = document.getElementById('content');
   var title = '';  // Initialize title
@@ -41,4 +43,62 @@ function navigate(view) {
   };
   xhr.open('GET', thing, true);
   xhr.send();
+}
+//saving student info
+$(document).ready(function() {
+ 
+  $(document).on('submit', '#registrationForm', function(e) {
+  console.log("Form submitted.");
+  e.preventDefault();
+      
+          var formData = new FormData(this);
+          $('#spinnersave').html("<img src='../../img/ajax_loader.gif' width='15'>").fadeIn('fast');
+          $('#indicatorsave').html("Saving...");
+          $.ajax({
+              type: 'POST',
+              url: 'metron/backend.php', // Provide the correct path to backend.php
+              data: formData,
+              processData: false,
+              contentType: false,
+              dataType:"JSON",
+                success: function(data){
+                    $('#spinnersave').fadeOut('fast');
+                    $('#indicatorsave').html("Save");
+                    if(data.status==200){
+                        $('#registrationForm')[0].reset();
+                        pop_up_success(data.message);
+                    }
+                    if(data.status==401){
+                        pop_wrong(data.message); 
+                    }
+                    if(data.status==500){
+                        pop_wrong(data.message);  
+                    }
+                },error: function(){
+                    $('#spinner').fadeOut('fast');
+                    $('#indicator').html("Save");
+                    pop_wrong("Something went wrong!");
+                    
+                }
+          });
+      });
+  });
+
+
+//messages
+
+function pop_wrong(feedback) {
+  iziToast.warning({
+  title: 'Error',
+  message: feedback,
+  position: 'topCenter'
+});
+}
+
+function pop_up_success(feedback) {
+iziToast.success({
+title: 'info',
+message: feedback,
+position: 'topCenter'
+});
 }

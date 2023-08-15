@@ -2,6 +2,7 @@
 <br>
 <br>
 <div class="container-fluid py-4">
+<div id="registrationMessage"></div>
       <div class="row">
         <div class="col-12">
           <div class="card mb-4">
@@ -10,117 +11,79 @@
             </div>
             <div class="card-body px-0 pt-0 pb-2">
 <div class="p-4 ">
-  <form>
-  <div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-text-input" class="form-control-label">First name</label>
-      <input type="text" class="form-control  " id="exampleFormControlInput1" placeholder="First name">
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-text-input" class="form-control-label">Last name</label>
-      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Last name">
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-text-input" class="form-control-label">Date of Brith</label>
-    <input class="form-control" type="date"  id="example-date-input" placeholder="Brith date">
-    </div>
-  </div>
-<div class="col-md-6">
-    <div class="form-group">
-    <label for="example-text-input" class="form-control-label">Gender</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>Mare</option>
-      <option>Female</option>
-    </select>
-    </div>
-  </div>
-  
-  </div>
-</div>
 
-
-
+<form id="registrationForm" action="" method="POST">
+  <input type="hidden" name="action" value="register">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="studentFirstName" class="form-control-label">First name</label>
+                    <input type="text" class="form-control" id="studentFirstName" name="studentFirstName" required>
+                </div>
             </div>
-          </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="studentLastName" class="form-control-label">Last name</label>
+                    <input type="text" class="form-control" id="studentLastName" name="studentLastName" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="studentDateOfBirth" class="form-control-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="studentDateOfBirth" name="studentDateOfBirth" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="gender" class="form-control-label">Gender</label>
+                    <select class="form-control" id="gender" name="gender" required>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Parent/Guardian Information</h6>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="guardianFirstName" class="form-control-label">Guardian First Name</label>
+                    <input type="text" class="form-control" id="guardianFirstName" name="guardianFirstName" required>
+                </div>
             </div>
-            <div class="card-body px-0 pt-0 pb-2">
-<div class="p-4 ">
-  <form>
-  <div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-text-input" class="form-control-label">Full names</label>
-      <input type="text" class="form-control  " id="exampleFormControlInput1" placeholder="ex: GASANA Willson">
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-text-input" class="form-control-label">Relationship to the student</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>Parent</option>
-      <option>Guardian</option>
-    </select>
-    </div>
-  </div>
-  </div>
-</div>
-
-
-
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="guardianLastName" class="form-control-label">Guardian Last Name</label>
+                    <input type="text" class="form-control" id="guardianLastName" name="guardianLastName" required>
+                </div>
             </div>
-</div>
-            <div class="row">
-        <div class="col-12">
-          <div class="card mb-4">
-            <div class="card-header pb-0">
-              <h6>Contact Information</h6>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="relationship" class="form-control-label">Relationship to the Student</label>
+                    <select class="form-control" id="relationship" name="relationship" required>
+                        <option>Parent</option>
+                        <option>Guardian</option>
+                    </select>
+                </div>
             </div>
-            <div class="card-body px-0 pt-0 pb-2">
-<div class="p-4 ">
-  <form>
-  <div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-email-input" class="form-control-label">Email</label>
-        <input class="form-control" type="email" value="@example.com" id="example-email-input">
-    </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="form-group">
-    <label for="example-tel-input" class="form-control-label">Phone</label>
-        <input class="form-control" type="tel" value="078-(770)-888-44" id="example-tel-input">
-    </div>
-  </div>
-  
+        </div>
 
-  <div class="col-md-6">
-    <div class="form-group">
-    <button type="button" class="btn bg-gradient-success">Save</button>
-    </div>
-  </div>
-</div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="guardianContactEmail" class="form-control-label">Guardian Email</label>
+                    <input type="email" class="form-control" id="guardianContactEmail" name="guardianContactEmail" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="guardianContactPhone" class="form-control-label">Guardian Phone</label>
+                    <input type="tel" class="form-control" id="guardianContactPhone" name="guardianContactPhone" required>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn bg-gradient-success"><span id="spinnersave">&nbsp;<i class="fa fa-check" aria-hidden="true"></i>&nbsp;</span>&nbsp;<span id="indicatorsave">Save</span></button>
 </form>
-
-
-
-            </div>
-          </div>
-        </div>
       </div>
           </div>
         </div>
@@ -159,3 +122,4 @@
         </div>
       </footer>
     </div>
+   
