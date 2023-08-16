@@ -7,6 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 
+
 include ('../connection.php');
 $connection = $conn;
 
@@ -25,6 +26,13 @@ $studentLastName = $_POST["studentLastName"];
 $studentDateOfBirth = $_POST["studentDateOfBirth"];
 $gender = $_POST["gender"];
 $registrationNumber = date("Y") . str_pad(rand(0, 9999), 4, "0", STR_PAD_LEFT);
+
+include "../phpqrcode/qrlib.php";
+
+$qr_code_directory = '../sIDqrcodes/';
+$qr_code_data = $registrationNumber;
+$qr_code_file = $qr_code_directory . $registrationNumber . '.png';
+QRcode::png($qr_code_data, $qr_code_file, 'L', 4, 2);
 
 
 $guardianFirstName = $_POST["guardianFirstName"];
