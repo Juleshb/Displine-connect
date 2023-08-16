@@ -24,6 +24,7 @@ $studentFirstName = $_POST["studentFirstName"];
 $studentLastName = $_POST["studentLastName"];
 $studentDateOfBirth = $_POST["studentDateOfBirth"];
 $gender = $_POST["gender"];
+$registrationNumber = date("Y") . str_pad(rand(0, 9999), 4, "0", STR_PAD_LEFT);
 
 
 $guardianFirstName = $_POST["guardianFirstName"];
@@ -33,14 +34,14 @@ $guardianContactEmail = $_POST["guardianContactEmail"];
 $guardianContactPhone = $_POST["guardianContactPhone"];
 
 
-$sqlStudent = "INSERT INTO Student (FirstName, LastName, DateOfBirth, Gender)
-               VALUES (?, ?, ?, ?)";
+$sqlStudent = "INSERT INTO Student (FirstName, LastName, DateOfBirth, Gender,studentNumber)
+               VALUES (?, ?, ?, ?,?)";
 
 $sqlGuardian = "INSERT INTO Guardian (FirstName, LastName, Relationship, ContactEmail, ContactPhone)
                 VALUES (?, ?, ?, ?, ?)";
 
 $stmtStudent = $this->connect->prepare($sqlStudent);
-$stmtStudent->bind_param("ssss", $studentFirstName, $studentLastName, $studentDateOfBirth, $gender);
+$stmtStudent->bind_param("sssss", $studentFirstName, $studentLastName, $studentDateOfBirth, $gender,$registrationNumber);
 $stmtStudent->execute();
 $studentID = $stmtStudent->insert_id;
 
@@ -58,10 +59,49 @@ $stmtUpdateStudent->bind_param("ii", $guardianID, $studentID);
 if ($stmtUpdateStudent->execute()) {
     $to = $guardianContactEmail;
     $subject = "Student Information Saved";
-    $message = "Hello " . $guardianFirstName . ",\n\n";
-    $message .= "We are pleased to inform you that the student's information has been successfully saved.\n";
-    $message .= "Student Name: " . $studentFirstName . " " . $studentLastName . "\n";
+    $message = '<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .logo {
+                max-width: 100px;
+            }
+            .footer {
+                margin-top: 20px;
+                padding-top: 10px;
+                border-top: 1px solid #ccc;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
 
+            <h2> Hello'. $guardianFirstName . ',</h2>
+            <p>We are pleased to inform you that the students information has been successfully saved.</p>
+            <p><strong>Student Name:' . $studentFirstName . '' . $studentLastName . '</p>
+			<p><strong>Student Number:' . $registrationNumber . '</p>
+            <p>If you have any questions, please contact us at:</p>
+            <p>Email: disciplineconnect@gmail.com<br>Phone: +250 792 445 913</p>
+	
+        </div>
+        <div class="footer">
+            &copy; 2023 Discipline Connect. All rights reserved.
+        </div>
+    </body>
+    </html>';
+
+   
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -76,12 +116,13 @@ if ($stmtUpdateStudent->execute()) {
         $mail->addAddress($to);
         $mail->Subject = $subject;
         $mail->Body = $message;
+        $mail->isHTML(true);
 
         $mail->send();
 
         $data = array("status" => "200", "message" => "Data saved successfully! Email sent to guardian.");
     } catch (Exception $e) {
-        $data = array("status" => "200", "message" => "Data saved successfully! Failed to send email.");
+        $data = array("status" => "500", "message" => "Data saved successfully! Failed to send email.");
     }
 
     $jsonData = json_encode($data);
@@ -93,6 +134,7 @@ if ($stmtUpdateStudent->execute()) {
     header('Content-Type: application/json');
     echo $jsonData;
 }
+
 
 $stmtStudent->close();
 $stmtGuardian->close();
