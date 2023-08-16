@@ -1,3 +1,5 @@
+
+
 <br><br>
 <div class="container-fluid py-4">
 
@@ -6,7 +8,7 @@
   <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
               <span class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true"></i></span>
-              <input type="text" id="searchstud" name="keyword" class="form-control" placeholder="Type student name or ID here...">
+              <input type="text" name="searchstud" class="form-control" placeholder="Type student name or ID here...">
             </div>
           </div>
   </div>
@@ -55,7 +57,6 @@
 
 
 </div>
-</body>
-</html>
-
-
+    
+      
+    </div>
