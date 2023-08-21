@@ -150,13 +150,13 @@ $stmtUpdateStudent->close();
 $this->connect->close();
 
     }
-//load student information
+//search student
 function load_stu_info(){
     $input = $_POST['keyword'];
     
-    $stmt = $this->connect->prepare("SELECT * FROM student WHERE FirstName LIKE ? OR LastName LIKE ?");
+    $stmt = $this->connect->prepare("SELECT * FROM student WHERE FirstName LIKE ? OR LastName LIKE ? OR studentNumber LIKE ? LIMIT 4");
     $inputParam = "%" . $input . "%";
-    $stmt->bind_param("ss", $inputParam, $inputParam);
+    $stmt->bind_param("sss", $inputParam, $inputParam,$inputParam);
     
     $stmt->execute();
     $result = $stmt->get_result();
@@ -168,6 +168,27 @@ function load_stu_info(){
     echo $jsonData;
 }
 
+//loadstudent info
+function load_student_info(){
+    $stu = $_POST['stu'];
+    
+    $stmt = $this->connect->prepare("SELECT student.*, guardian.*
+        FROM student 
+        JOIN guardian ON student.GuardianID = guardian.GuardianID
+        WHERE student.studentNumber = ?");
+   
+    $stmt->bind_param("s", $stu); // Bind the parameter
+    $stmt->execute();
+    
+    $result = $stmt->get_result(); // Get the result set
+    $data = $result->fetch_all(MYSQLI_ASSOC); // Fetch the rows as an associative array
+    
+    $jsonData = json_encode($data);
+    header('Content-Type: application/json');
+    echo $jsonData;   
+}
+
+
 }
 
 $student = new Students();
@@ -178,7 +199,10 @@ switch ($action) {
         break;
 	case 'searchst':
     	$student->load_stu_info();
-		break;
+	    break;
+    case 'loadstdnt':
+        $student->load_student_info();
+        break;
 		
 }
 ?>

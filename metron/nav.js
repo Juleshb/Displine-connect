@@ -62,12 +62,18 @@ $(document).ready(function() {
                         icon: 'success',
                         title: 'Success',
                         text: data.message,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500
                     });
                 } else if (data.status == 401 || data.status == 500) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: data.message,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500
                     });
                 }
             },
@@ -78,6 +84,9 @@ $(document).ready(function() {
                     icon: 'error',
                     title: 'Error',
                     text: 'Something went wrong!',
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500
                 });
             }
         });
@@ -87,97 +96,107 @@ $(document).ready(function() {
     });
 
 
-
-
-    
-//searching student for attendence
 $(document).ready(function() {
     console.log("Document ready function executed.");
 
-    // Use the [name="searchstud"] selector to target the input element by its name attribute
-    $('input[name="searchstud"]').keyup(function(e) {
-        console.log("keyup event triggered.");
-        console.log("Input value: " + $(this).val());
-        e.preventDefault();
-        
-        var formData = {
-            keyword: $(this).val(),
-            action: 'searchst',
-        };
 
-        $.ajax({
-            url: "metron/backend.php",
-            type: "POST",
-            data: formData,
-            dataType: "JSON",
-            beforeSend: function() {
-                // Show loading spinner or change UI here if needed
-            },
-            success: function(data) {
-                // Hide loading spinner or revert UI changes if applicable
-        
-                if (data.length > 0) {
-                    var html = '<select id="student-select">';  // Create a select element
-                    
-                    data.forEach(function(value) {
-                        var FirstName = value.FirstName;
-                        var LastName = value.LastName;
-                        html += '<option value="' + FirstName + '">' + LastName + '</option>';
-                    });
-                    
-                    html += '</select>';  // Close the select element
-                    
-                    // Display the SweetAlert popup with the generated options
-                    Swal.fire({
-                        title: 'Select Student',
-                        html: html,  // Use the generated select element
-                        showCancelButton: true,
-                        cancelButtonText: 'Cancel',
-                        confirmButtonText: 'Select',
-                        onBeforeOpen: () => {
-                            // Apply select2 or other enhancements if needed
-                            // $('#student-select').select2();
-                        },
-                        inputValidator: (value) => {
-                            return new Promise((resolve) => {
-                                if (value) {
-                                    resolve();
-                                } else {
-                                    resolve('You need to select a student');
-                                }
-                            });
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Get the selected student's information
-                            var selectedStudent = data.find(student => student.FirstName === result.value);
-                            
-                            // Display the selected student's information in a popover
-                            Swal.fire({
-                                title: 'Selected Student',
-                                html: '<p>First Name: ' + selectedStudent.FirstName + '</p>' +
-                                      '<p>Last Name: ' + selectedStudent.LastName + '</p>',
-                                confirmButtonText: 'OK'
-                            });
-                        }
-                    });
-                } else {
+    $("#searchstud").keyup(function(e){
+        $("#searchitem").attr("hidden",false);
+        var formData = {
+            keyword:$(this).val(),
+            action:'searchst'
+        }
+            // $("#info").attr("hidden",true);
+           
+            // $('#spinner').html("<img src='/img/ajax_loader.gif' width='15'>").fadeIn('fast');
+            $.ajax({
+                url: "metron/backend.php",
+                type: "POST",
+                data: formData,
+                dataType: "JSON",
+                success: function(data){
+                    // $('#spinner').html("<i class='fas fa-search'></i>")
+                    if (data.length > 0) {
+                        var i = 1;
+                        var html = '';
+                        data.forEach(function(value) {
+                            var reg = value.studentNumber;
+                            var names=value.FirstName+" "+value.LastName;
+                            html += '<tr class="stu" id="stu" data-id='+reg+'>';
+                            html += '<th>' + i+ '</th>';
+                            html += '<th>' + reg+ '</th>';
+                            html += '<td>' + names+ '</td>';
+                            html += '</tr>';
+                            i++;
+                        });
+                         $("#contents").attr("hidden",false);
+                        $('#contents').html(html);
+                    } else{
+                        $("#searchitem").attr("hidden",true);
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Oops...',
+                            text: 'No data found!',
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },error: function(){
+                    $("#searchitem").attr("hidden",true);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'No data found!',
+                        text: 'Something went wrong!',
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500
                     });
                 }
-            },
-            error: function() {
-                // Revert UI changes if needed
-            
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Something went wrong!',
-                });
-            }
         });
     });
+    
+    $(document).on('click', '.stu', function() {
+        var formData = {
+            stu: $(this).data("id"),
+            action: 'loadstdnt'
+        };
+    
+        // $('#spinner').html("<img src='/img/ajax_loader.gif' width='15'>").fadeIn('fast');
+        
+        $.ajax({
+    url: "metron/backend.php",
+    type: "POST",
+    data: formData,
+    dataType: "JSON",
+    success: function(data) {
+        // Populate student details
+        $("#sfname").text(data.FirstName);
+        $("#slname").text(data.LastName);
+        $("#sgender").text(data.Gender);
+        $("#dob").text(data.DateOfBirth);
+        $("#sn").text(data.studentNumber);
+
+        // Populate guardian details
+        $("#gfn").text(data.FirstName);
+        $("#gln").text(data.LastName);
+        $("#mail").text(data.ContactEmail);
+        $("#phone").text(data.ContactPhone);
+        $("#relati").text(data.Relationship);
+
+        // Display QR code image
+        var html = '<img alt="image" src="/librarian/books/' + data.qr_code_file + '">';
+        $("#qr").html(html);
+
+        // Show the student and guardian information sections
+        $("#searchitem").attr("hidden", true);
+        $("#studentinfo").attr("hidden", false);
+    },
+    error: function() {
+        // Handle error here
+    }
+});
+
+    });
+    
 });
