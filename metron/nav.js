@@ -102,6 +102,7 @@ $(document).ready(function() {
 
     $("#searchstud").keyup(function(e){
         $("#searchitem").attr("hidden",false);
+        $("#studentinfo").attr("hidden",true);
         var formData = {
             keyword:$(this).val(),
             action:'searchst'
@@ -169,31 +170,52 @@ $(document).ready(function() {
     type: "POST",
     data: formData,
     dataType: "JSON",
-    success: function(data) {
+        success: function(data){
+        if(data.length>0){
         // Populate student details
-        $("#sfname").text(data.FirstName);
-        $("#slname").text(data.LastName);
-        $("#sgender").text(data.Gender);
-        $("#dob").text(data.DateOfBirth);
-        $("#sn").text(data.studentNumber);
+        $("#sfname").html(data[0].FirstName);
+        $("#slname").html(data[0].LastName);
+        $("#sgender").html(data[0].Gender);
+        $("#dob").html(data[0].DateOfBirth);
+        $("#sn").html(data[0].studentNumber);
 
         // Populate guardian details
-        $("#gfn").text(data.FirstName);
-        $("#gln").text(data.LastName);
-        $("#mail").text(data.ContactEmail);
-        $("#phone").text(data.ContactPhone);
-        $("#relati").text(data.Relationship);
+        $("#gfn").html(data[0].FirstName);
+        $("#gln").html(data[0].LastName);
+        $("#mail").html(data[0].ContactEmail);
+        $("#phone").html(data[0].ContactPhone);
+        $("#relati").html(data[0].Relationship);
 
         // Display QR code image
-        var html = '<img alt="image" src="/librarian/books/' + data.qr_code_file + '">';
-        $("#qr").html(html);
-
+        var html = '';
+            var images = data[0].studentNumber;
+            html += '<img alt="image" src="sIDqrcodes/'+images+ '.png">';
+             
+             $("#qr").html(html);
         // Show the student and guardian information sections
         $("#searchitem").attr("hidden", true);
         $("#studentinfo").attr("hidden", false);
+    }
+    else{
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No data found',
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    }
     },
     error: function() {
-        // Handle error here
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong!',
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 });
 

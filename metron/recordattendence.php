@@ -47,7 +47,7 @@
       <p class="card-text">Student Number:<span id="sn"></span></p>
       <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
     </div>
-  </div>
+  </div>&nbsp;&nbsp;
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">Parent/Guardian</h5>
@@ -56,10 +56,11 @@
       <p class="card-text">Phone:<span id="phone"></span></p>
       <p class="card-text">Relationship:<span id="relati"></span></p>
     </div>
-  </div>
+  </div>&nbsp;&nbsp;
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Chat</h5>
+      <h5 class="card-title"></h5>
+      <p class="card-text"><span id="qr"></span></p>
       <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
     </div>
   </div>

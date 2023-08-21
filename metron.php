@@ -251,15 +251,17 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] != "user") {
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="metron/nav.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="./assets/js/core/popper.min.js"></script>
   <script src="./assets/js/core/bootstrap.min.js"></script>
   <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="./assets/js/plugins/chartjs.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.16/dist/sweetalert2.all.min.js"></script>
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="node_modules/@iconify/iconify/dist/iconify.min.js"></script>
+  <script src="metron/nav.js"></script>
 
 
 
