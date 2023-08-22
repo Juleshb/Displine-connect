@@ -187,6 +187,12 @@ $(document).ready(function() {
         $("#phone").html(data[0].ContactPhone);
         $("#relati").html(data[0].Relationship);
 
+        $("#pstudentid").val(data[0].studentNumber);
+        $("#pemail").val(data[0].ContactEmail);
+        $("#guardianContact").val(data[0].ContactEmail);
+        $("#pstudentname").val(data[0].FirstName);
+        $("#pparentname").val(data[0].FirstName);
+
         // Display QR code image
         var html = '';
             var images = data[0].studentNumber;
@@ -221,5 +227,53 @@ $(document).ready(function() {
 });
 
     });
+
+    //submit permission 
+    $(document).on('submit', '#submipermission', function(e) {
+        e.preventDefault();
+            
+                var formData = new FormData(this);
+                $.ajax({
+                  type: 'POST',
+                  url: 'metron/backend.php',
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  dataType: "JSON",
+                  success: function(data) {
+                      if (data.status == 200) {
+                          $('#submipermission')[0].reset();
+                          Swal.fire({
+                              icon: 'success',
+                              title: 'Success',
+                              text: data.message,
+                              position: 'top-end',
+                              showConfirmButton: false,
+                              timer: 1500
+                          });
+                      } else if (data.status == 401 || data.status == 500) {
+                          Swal.fire({
+                              icon: 'error',
+                              title: 'Error',
+                              text: data.message,
+                              position: 'top-end',
+                              showConfirmButton: false,
+                              timer: 1500
+                          });
+                      }
+                  },
+                  error: function() {
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Error',
+                          text: 'Something went wrong!',
+                          position: 'top-end',
+                          showConfirmButton: false,
+                          timer: 1500
+                      });
+                  }
+              });
+              
+            });
     
 });

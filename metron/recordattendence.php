@@ -86,7 +86,12 @@
                 <h3 class="font-weight-bolder text-info text-gradient">Permision detail</h3>
               </div>
               <div class="card-body">
-                <form role="form text-left">
+                <form role="form text-left" id="submipermission" action="" method="POST">
+                <input type="hidden" name="action" value="submitpermission">
+                <input type="hidden" name="pstudentid" id="pstudentid" value="">
+                <input type="hidden" name="pemail" id="pemail" value="">
+                <input type="hidden" name="pstudentname" id="pstudentname" value="">
+                <input type="hidden" name="pparentname" id="pparentname" value="">
                   <label>Permission Type</label>
                   <div class="input-group mb-3">
                   <select class="form-control" id="permissionType" name="permissionType" required>
@@ -98,6 +103,10 @@
                   <label>Date and Time of Permission</label>
                   <div class="input-group mb-3">
                   <input type="datetime-local" class="form-control" id="permissionDate" name="permissionDate" required>
+                  </div>
+                  <label>Expired Date and Time</label>
+                  <div class="input-group mb-3">
+                  <input type="datetime-local" class="form-control" id="expireddate" name="expireddate" required>
                   </div>
                   <label>Purpose or Reason for Permission</label>
                   <div class="input-group mb-3">

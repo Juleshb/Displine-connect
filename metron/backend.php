@@ -188,6 +188,148 @@ function load_student_info(){
     echo $jsonData;   
 }
 
+// Submit student permission
+
+function submit_permission() {
+    $permissionType = $_POST["permissionType"];
+    $permissionDate = $_POST["permissionDate"];
+    $expireddate = $_POST["expireddate"];
+    $permissionReason = $_POST["permissionReason"];
+    $guardianContact = $_POST["guardianContact"];
+    $approverName = $_POST["approverName"];
+    $emergencyContact = $_POST["emergencyContact"];
+    $comments = $_POST["comments"];
+    $confirm = isset($_POST["confirm"]) ? 1 : 0;
+
+   
+    $studentID = $_POST["pstudentid"]; 
+    $studentname= $_POST["pstudentname"]; 
+    $parentname = $_POST["pparentname"]; 
+
+  
+    $insertPermissionQuery = "INSERT INTO permissions (studentID, permissionType, permissionDate, permissionReason, guardianContact, approverName, emergencyContact, comments, confirm,expireddate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    
+    $stmt =  $this->connect->prepare($insertPermissionQuery);
+    $stmt->bind_param("issssssssi", $studentID, $permissionType, $permissionDate, $permissionReason, $guardianContact, $approverName, $emergencyContact, $comments, $confirm, $expireddate);
+    
+    if ($stmt->execute()) {
+        $to = $guardianContact;
+        $subject = "Confirmation of Student's Permission Request";
+        $message = '<html>
+        <head>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            margin: 0 0 1em;
+            color: #555;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        strong {
+            color: #333;
+        }
+        .footer {
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <p>Dear ' .  $parentname . ',</p>
+
+        <p>We hope this email finds you well. We would like to inform you that the permission request for your child,' . $studentname . ', has been successfully reviewed and confirmed.</p>
+
+        <p>Here are the details of the permission request:</p>
+        
+        <ul>
+            <li><strong>Permission Type:</strong> ' . $permissionType . '</li>
+            <li><strong>Date and Time:</strong> ' . $permissionDate  . '</li>
+            <li><strong>Expired Date and Time:</strong> ' . $expireddate . '</li>
+            <li><strong>Purpose/Reason:</strong> ' .  $permissionReason . '</li>
+            <li><strong>Approver Name:</strong> ' . $approverName  . '</li>
+            <li><strong>Emergency Contact:</strong> ' . $emergencyContact  . '</li>
+            <li><strong>Additional Comments:</strong> ' .  $comments . '</li>
+        </ul>
+
+        <p>We would like to reassure you that we take every precaution to ensure the safety and well-being of our students during the permission activities. Your childs safety is our top priority.</p>
+
+        <p>If you have any questions or concerns regarding the permission, please feel free to reach out to us at ' . $emergencyContact  . '.</p>
+
+        <p>Thank you for entrusting us with your childs education and safety. We look forward to providing them with valuable experiences through these permissions.</p>
+
+        <p>Best regards,<br>
+        
+
+          </div>
+            <div class="footer">
+             &copy; 2023 Discipline Connect. All rights reserved.
+              </div>
+        </body>
+        </html>';
+    
+       
+        $mail = new PHPMailer(true);
+        try {
+            $mail->isSMTP();
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->SMTPSecure = "tls";
+            $mail->SMTPAuth = true;
+            $mail->Username = "disciplineconnect@gmail.com";
+            $mail->Password = "ghkypfrobbgqrlpk";
+    
+            $mail->setFrom("disciplineconnect@gmail.com");
+            $mail->addAddress($to);
+            $mail->Subject = $subject;
+            $mail->Body = $message;
+            $mail->isHTML(true);
+    
+            $mail->send();
+    
+            $data = array("status" => "200", "message" => "Permission confrimed successfully!! Email sent to guardian.");
+        } catch (Exception $e) {
+            $data = array("status" => "500", "message" => "Permission confrimed successfully!! Failed to send email.");
+        }
+    
+        $jsonData = json_encode($data);
+        header('Content-Type: application/json');
+        echo $jsonData;
+    } else {
+        $data = array("status" => "500", "message" => "Permission not saved!");
+        $jsonData = json_encode($data);
+        header('Content-Type: application/json');
+        echo $jsonData;
+    }
+    $stmt->close();
+    $this->connect->close();
+    
+}
 
 }
 
@@ -202,6 +344,9 @@ switch ($action) {
 	    break;
     case 'loadstdnt':
         $student->load_student_info();
+        break;
+    case 'submitpermission':
+        $student->submit_permission();
         break;
 		
 }
