@@ -101,6 +101,7 @@ $(document).ready(function() {
 
 
     $("#searchstud").keyup(function(e){
+        $('#spinersch').html('<iconify-icon icon="line-md:loading-twotone-loop"></iconify-icon>').fadeIn('fast');
         $("#searchitem").attr("hidden",false);
         $("#studentinfo").attr("hidden",true);
         var formData = {
@@ -116,7 +117,7 @@ $(document).ready(function() {
                 data: formData,
                 dataType: "JSON",
                 success: function(data){
-                    // $('#spinner').html("<i class='fas fa-search'></i>")
+                    $('#spinersch').html('<i class="fas fa-search" aria-hidden="true"></i>').fadeIn('fast');
                     if (data.length > 0) {
                         var i = 1;
                         var html = '';
