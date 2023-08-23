@@ -241,37 +241,39 @@ $(document).ready(function() {
                   contentType: false,
                   dataType: "JSON",
                   success: function(data) {
-                      if (data.status == 200) {
-                          $('#submipermission')[0].reset();
-                          Swal.fire({
-                              icon: 'success',
-                              title: 'Success',
-                              text: data.message,
-                              position: 'top-end',
-                              showConfirmButton: false,
-                              timer: 1500
-                          });
-                      } else if (data.status == 401 || data.status == 500) {
-                          Swal.fire({
-                              icon: 'error',
-                              title: 'Error',
-                              text: data.message,
-                              position: 'top-end',
-                              showConfirmButton: false,
-                              timer: 1500
-                          });
-                      }
-                  },
-                  error: function() {
-                      Swal.fire({
-                          icon: 'error',
-                          title: 'Error',
-                          text: 'Something went wrong!',
-                          position: 'top-end',
-                          showConfirmButton: false,
-                          timer: 1500
-                      });
-                  }
+                    console.log(data);
+                    if (data.status == 200) {
+                        $('#submipermission')[0].reset();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: data.message,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    } else if (data.status == 500) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Something went wrong!',
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
               });
               
             });

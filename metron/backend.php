@@ -2,9 +2,11 @@
 require '../PHPMailer/src/Exception.php';
 require '../PHPMailer/src/PHPMailer.php';
 require '../PHPMailer/src/SMTP.php';
+require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Twilio\Rest\Client;
 
 
 
@@ -213,6 +215,24 @@ function submit_permission() {
     $stmt->bind_param("issssssssi", $studentID, $permissionType, $permissionDate, $permissionReason, $guardianContact, $approverName, $emergencyContact, $comments, $confirm, $expireddate);
     
     if ($stmt->execute()) {
+
+        $sid    = "AC470f2bb04f1b7e0336397209aef5121e";
+        $token  = "a453e0661c796af1ce285015ab7be31c";
+        $twilio = new Client($sid, $token);
+    
+        $message = $twilio->messages
+          ->create("+250792445913", // to
+            array(
+              "from" => "+14706889058",
+              "body" => "Mubyeyi dufatanije kurera turabamenyeshako umwana wanyu $studentname yahawe uruhusha kuva $permissionDate rukazarangira $expireddate tubashimiye imikoranire myiza. ubundi busobanuro mwabusanga kuri email yanyu Murakoze!,
+             "
+            )
+          );
+    
+         $messid=($message->sid);
+
+
+
         $to = $guardianContact;
         $subject = "Confirmation of Student's Permission Request";
         $message = '<html>
@@ -256,10 +276,10 @@ function submit_permission() {
             border-top: 1px solid #ccc;
             text-align: center;
         }
-    </style>
-</head>
-<body>
-    <div class="container">
+        </style>
+       </head>
+        <body>
+      <div class="container">
 
         <p>Dear ' .  $parentname . ',</p>
 
@@ -295,7 +315,7 @@ function submit_permission() {
     
        
         $mail = new PHPMailer(true);
-        try {
+        // try {
             $mail->isSMTP();
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 587;
@@ -312,23 +332,18 @@ function submit_permission() {
     
             $mail->send();
     
-            $data = array("status" => "200", "message" => "Permission confrimed successfully!! Email sent to guardian.");
-        } catch (Exception $e) {
-            $data = array("status" => "500", "message" => "Permission confrimed successfully!! Failed to send email.");
-        }
-    
-        $jsonData = json_encode($data);
-        header('Content-Type: application/json');
-        echo $jsonData;
+            $data = array("messageID"=>$messid,"status" => "200", "message" => "Permission confirmed successfully!! Email and SMS sent to guardian.");
+            $jsonData = json_encode($data);
+            header('Content-Type: application/json');
+            echo $jsonData;
     } else {
-        $data = array("status" => "500", "message" => "Permission not saved!");
-        $jsonData = json_encode($data);
-        header('Content-Type: application/json');
-        echo $jsonData;
-    }
-    $stmt->close();
-    $this->connect->close();
-    
+    // Prepare JSON response for failure
+          $data = array("status" => "500", "message" => "Permission not saved!");
+          $jsonData = json_encode($data);
+          header('Content-Type: application/json');
+         echo $jsonData;
+     }
+
 }
 
 }
