@@ -217,7 +217,7 @@ function submit_permission() {
     if ($stmt->execute()) {
 
         $sid    = "AC470f2bb04f1b7e0336397209aef5121e";
-        $token  = "a453e0661c796af1ce285015ab7be31c";
+        $token  = "1b90e5df1d1791526eb21e50ae83027b";
         $twilio = new Client($sid, $token);
     
         $message = $twilio->messages
@@ -230,8 +230,6 @@ function submit_permission() {
           );
     
          $messid=($message->sid);
-
-
 
         $to = $guardianContact;
         $subject = "Confirmation of Student's Permission Request";
