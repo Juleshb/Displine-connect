@@ -310,7 +310,7 @@ $(document).ready(function() {
                                     html += '<td>';
                                     html += ' <div class="d-flex px-2">';
                                     html += '   <div>';
-                                    html += '   <img src="assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">';
+                                    html += '   <i class="fa fa-graduation-cap" aria-hidden="true"></i>';
                                     html += '  </div>';
                                     html += '  <div class="my-auto">';
                                     html += '    <h6 class="mb-0 text-sm">' + reg+ '</h6>';
@@ -365,5 +365,83 @@ $(document).ready(function() {
                         }
                 });
             });
+
+    $(document).on('click', '#stliste', function() {
+                var formData = {
+                action:'stulistes'
+                    }
+                         $.ajax({
+                                url: "metron/backend.php",
+                                type: "POST",
+                                data: formData,
+                                dataType: "JSON",
+                                success: function(data){
+                                    $('#spinersch').html('<i class="fas fa-search" aria-hidden="true"></i>').fadeIn('fast');
+                                    if (data.length > 0) {
+                                        var i = 1;
+                                        var html = '';
+                                        data.forEach(function(value) {
+                                            var reg = value.studentNumber;
+                                            var FirstName=value.FirstName;
+                                            var LastName=value.LastName;
+                                            var DateOfBirth=value.DateOfBirth;
+                                          
+                                          
+                                            html += '<tr>';
+                                            html += '<td>';
+                                            html += ' <div class="d-flex px-2">';
+                                            html += '   <div>';
+                                            html += '   <i class="fa fa-graduation-cap" aria-hidden="true"></i>';
+                                            html += '  </div>';
+                                            html += '  <div class="my-auto">';
+                                            html += '    <h6 class="mb-0 text-sm">' + reg+ '</h6>';
+                                            html += '    </div>';
+                                            html += '  </div>';
+                                            html += '  </td>';
+                                            html += '  <td>';
+                                            html += '     <p class="text-sm font-weight-bold mb-0">' + FirstName+ '</p>';
+                                            html += '    </td>';
+                                            html += '   <td>';
+                                            html += '    <span class="text-xs font-weight-bold">' + LastName + '</span>';
+                                            html += '    </td>';
+                                            html += '    <td class="align-middle text-center">';
+                                            html += '     <div class="d-flex align-items-center justify-content-center">';
+                                            html += '     <span class="me-2 text-xs font-weight-bold">' + DateOfBirth + '</span>';
+                                            html += '      <div>';
+                                            html += '       </div>';
+                                            html += '      </div>';
+                                            html += '     </td>';
+                                            html += '    <td class="align-middle">';
+                                            html += '   <button class="btn btn-link text-secondary mb-0">';
+                                            html += '      <i class="fa fa-ellipsis-v text-xs"></i>';
+                                            html += '     </button>';
+                                            html += '    </td>';
+                                            html += '  </tr> '; 
+                                        });
+                                        $('#studata').html(html);
+                                    } else{
+                            
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Oops...',
+                                            text: 'No data found!',
+                                            position: 'top-end',
+                                            showConfirmButton: false,
+                                            timer: 1500
+                                        });
+                                    }
+                                },error: function(){
+                                   
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'Something went wrong!',
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                }
+                        });
+                    });
     
 });

@@ -357,6 +357,21 @@ function permission_liste(){
     echo $jsonData;
 }
 
+function student_liste(){
+    $stmt = $this->connect->prepare("SELECT * FROM `student`");
+    $stmt->execute();
+    $result = $stmt->get_result(); 
+    $data = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    
+    $jsonData = json_encode($data);
+    header('Content-Type: application/json');
+    echo $jsonData;
+}
+
 }
 
 $student = new Students();
@@ -376,6 +391,9 @@ switch ($action) {
         break;
     case 'permlistes':
         $student->permission_liste();
+        break;
+    case 'stulistes':
+        $student->student_liste();
         break;
 		
 }
