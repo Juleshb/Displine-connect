@@ -124,10 +124,10 @@ $(document).ready(function() {
                         data.forEach(function(value) {
                             var reg = value.studentNumber;
                             var names=value.FirstName+" "+value.LastName;
-                            html += '<tr class="stu" id="stu" data-id='+reg+'>';
-                            html += '<th>' + i+ '</th>';
-                            html += '<th>' + reg+ '</th>';
-                            html += '<td>' + names+ '</td>';
+                            html += '<tr class="stu" id="stu" data-id='+reg+' style="cursor: pointer;">';
+                            html += '<td class="text-sm font-weight-bold mb-0">' + i+ '</td>';
+                            html += '<td class="text-sm font-weight-bold mb-0">' + reg+ '</td>';
+                            html += '<td class="text-sm font-weight-bold mb-0">' + names+ '</td>';
                             html += '</tr>';
                             i++;
                         });
@@ -159,6 +159,7 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '.stu', function() {
+        
         var formData = {
             stu: $(this).data("id"),
             action: 'loadstdnt'
@@ -201,7 +202,9 @@ $(document).ready(function() {
              $("#qr").html(html);
         // Show the student and guardian information sections
         $("#searchitem").attr("hidden", true);
+        $("#pliste").attr("hidden",true);
         $("#studentinfo").attr("hidden", false);
+
     }
     else{
         Swal.fire({
@@ -276,6 +279,91 @@ $(document).ready(function() {
                 }
               });
               
+            });
+
+    $(document).on('click', '#permissionlist', function() {
+        $("#searchitem").attr("hidden",true);
+        $("#pliste").attr("hidden",false);
+        $("#studentinfo").attr("hidden",true);
+        var formData = {
+        action:'permlistes'
+            }
+                 $.ajax({
+                        url: "metron/backend.php",
+                        type: "POST",
+                        data: formData,
+                        dataType: "JSON",
+                        success: function(data){
+                            $('#spinersch').html('<i class="fas fa-search" aria-hidden="true"></i>').fadeIn('fast');
+                            if (data.length > 0) {
+                                var i = 1;
+                                var html = '';
+                                data.forEach(function(value) {
+                                    var reg = value.studentID;
+                                    var permissionDate=value.permissionDate;
+                                    var permissionType=value.permissionType;
+                                    var expireddate=value.expireddate;
+                                    var approverName=value.approverName;
+
+                                  
+                                    html += '<tr>';
+                                    html += '<td>';
+                                    html += ' <div class="d-flex px-2">';
+                                    html += '   <div>';
+                                    html += '   <img src="assets/img/small-logos/logo-spotify.svg" class="avatar avatar-sm rounded-circle me-2" alt="spotify">';
+                                    html += '  </div>';
+                                    html += '  <div class="my-auto">';
+                                    html += '    <h6 class="mb-0 text-sm">' + reg+ '</h6>';
+                                    html += '    </div>';
+                                    html += '  </div>';
+                                    html += '  </td>';
+                                    html += '  <td>';
+                                    html += '     <p class="text-sm font-weight-bold mb-0">' + permissionType+ '</p>';
+                                    html += '    </td>';
+                                    html += '   <td>';
+                                    html += '    <span class="text-xs font-weight-bold">' + permissionDate+ '</span>';
+                                    html += '    </td>';
+                                    html += '    <td class="align-middle text-center">';
+                                    html += '     <div class="d-flex align-items-center justify-content-center">';
+                                    html += '     <span class="me-2 text-xs font-weight-bold">60%</span>';
+                                    html += '      <div>';
+                                    html += '          <div class="progress">';
+                                    html += '            <div class="progress-bar bg-gradient-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>';
+                                    html += '         </div>';
+                                    html += '       </div>';
+                                    html += '      </div>';
+                                    html += '     </td>';
+                                    html += '    <td class="align-middle">';
+                                    html += '   <button class="btn btn-link text-secondary mb-0">';
+                                    html += '      <i class="fa fa-ellipsis-v text-xs"></i>';
+                                    html += '     </button>';
+                                    html += '    </td>';
+                                    html += '  </tr> '; 
+                                });
+                                $('#permdata').html(html);
+                            } else{
+                                $("#searchitem").attr("hidden",true);
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Oops...',
+                                    text: 'No data found!',
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        },error: function(){
+                            $("#searchitem").attr("hidden",true);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Something went wrong!',
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                });
             });
     
 });

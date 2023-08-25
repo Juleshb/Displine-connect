@@ -4,6 +4,28 @@
 <div class="container-fluid py-4">
 
 <div class="card card-frame">
+<div class="nav-wrapper position-relative end-0">
+  <ul class="nav nav-pills nav-fill p-1" role="tablist">
+    <li class="nav-item">
+      <a id="permissionlist" class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#profile-tabs-icons" role="tab" aria-controls="preview" aria-selected="true">
+      <i class="ni ni-badge text-sm me-2"></i> Permision List
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#dashboard-tabs-icons" role="tab" aria-controls="code" aria-selected="false">
+        <i class="ni ni-laptop text-sm me-2"></i> Dashboard
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#dashboard-tabs-icons" role="tab" aria-controls="code" aria-selected="false">
+        <i class="ni ni-laptop text-sm me-2"></i> Dashboard
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+<br><br>
+<div class="card card-frame">
   <div class="card-body">
   <div class="ms-md-auto pe-md-3 d-flex align-items-center">
             <div class="input-group">
@@ -13,16 +35,16 @@
           </div>
   </div>
 </div>
-
+<br>
 <div class="col-12 col-md-6 col-lg-6" id="searchitem" hidden>
                             <div class="card">
-                                <div class="card-body">
-                                    <table class="table table-hover table-sm">
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table align-items-center justify-content-center mb-0">
                                         <thead>
                                             <tr>
-                                                <th scope="col">No</th>
-                                                <th scope="col">Reg No</th>
-                                                <th scope="col">Names</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reg No</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Names</th>
                                             </tr>
                                         </thead>
                                         <tbody id="contents">
@@ -33,7 +55,26 @@
                                 </div>
                             </div>
                         </div>
-<br><br>
+<br>
+<div class="card-body px-0 pt-0 pb-2" id="pliste" hidden>
+              <div class="table-responsive p-0">
+                <table class="table align-items-center justify-content-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"># Student ID</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Permission Type</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Permission Date</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-center opacity-7 ps-2">Permission Expired date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="permdata">
+                  
+                  </tbody>
+                </table>
+              </div>
+            </div>
+<br>
 <div id="studentinfo" hidden>
 <div class="card card-frame">
   <div class="card-body">

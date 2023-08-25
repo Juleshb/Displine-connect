@@ -20,9 +20,7 @@ class Students {
         global $connection;
         $this->connect = $connection;
     }
-
-
-    function save_student() {
+function save_student() {
 $studentFirstName = $_POST["studentFirstName"];
 $studentLastName = $_POST["studentLastName"];
 $studentDateOfBirth = $_POST["studentDateOfBirth"];
@@ -344,6 +342,21 @@ function submit_permission() {
 
 }
 
+function permission_liste(){
+    $stmt = $this->connect->prepare("SELECT * FROM `permissions`");
+    $stmt->execute();
+    $result = $stmt->get_result(); // Get the result set
+    $data = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+    
+    $jsonData = json_encode($data);
+    header('Content-Type: application/json');
+    echo $jsonData;
+}
+
 }
 
 $student = new Students();
@@ -360,6 +373,9 @@ switch ($action) {
         break;
     case 'submitpermission':
         $student->submit_permission();
+        break;
+    case 'permlistes':
+        $student->permission_liste();
         break;
 		
 }

@@ -55,7 +55,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] != "user") {
             <i class="fa-solid fa-user-plus" style="color: #8a340f;"></i>
              
             </div>
-            <span class="nav-link-text ms-1">Add Student</span>
+            <span class="nav-link-text ms-1">Students</span>
           </a>
         </li>
         <li class="nav-item">
